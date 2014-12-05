@@ -112,7 +112,7 @@ fi
 # Avoid re-appending settings in screen sessions
 if [ -n "$STY" ]; then
     # Ensure ccache isn't set up in OE build session
-    if [ "${STY#*.}" = oe || "${STY#*.}" = devshell ]; then
+    if [[ "${STY#*.}" = oe || "${STY#*.}" = devshell ]]; then
         export PATH="$(echo $PATH | sed -r 's,[^:]+ccache[^:]*:,,g')"
         unset CCACHE_PREFIX
     fi
@@ -120,6 +120,13 @@ if [ -n "$STY" ]; then
 fi
 
 export EDITOR=vim
+
+if [ -d ${HOME}/bin ]; then
+    export PATH="${HOME}/bin:${PATH}"
+fi
+if [ -d ${HOME}/.bin ]; then
+    export PATH="${HOME}/.bin:${PATH}"
+fi
 
 # IceCream/ccache configuration
 if [ -x /usr/bin/ccache ]; then

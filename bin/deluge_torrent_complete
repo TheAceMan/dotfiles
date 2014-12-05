@@ -15,6 +15,9 @@ FLEXGET_COMMAND='/home/deluge/Flexget/bin/flexget --logfile '\
 FLEXGET_SORTING_CONFIG='/home/deluge/.flexget/sorting.yml'
 FLEXGET_TASK_PREFIX='Sort_Unpacked_'
 
+# Staging subdirectory for each task in sorting.yml
+# key: directory under completed (and also staging)
+# value: suffix of the task in the sorting config to run (FLEXGET_TASK_PREFIX+value)
 FLEXGET_PATH_TASK={
     '/movies/': 'Movies',
     '/tv_shows/': 'TV_Shows',
@@ -99,7 +102,7 @@ for path, task in FLEXGET_PATH_TASK.items():
             log.error('Failed attempting to rename the main unpacked file: %s' % sys.exc_info()[0])
             raise
 
-        cmd=FLEXGET_COMMAND+' -c '+FLEXGET_SORTING_CONFIG+' --task '+FLEXGET_TASK_PREFIX+task+\
+        cmd=FLEXGET_COMMAND+' -c '+FLEXGET_SORTING_CONFIG+' execute --task '+FLEXGET_TASK_PREFIX+task+\
             (' --disable-advancement' if 'tv' in path else '')
         log.debug('Shelling out: %s' % cmd)
         ret = subprocess.call(cmd, shell=True)

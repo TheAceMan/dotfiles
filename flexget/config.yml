@@ -65,7 +65,7 @@ templates:
         - \[facepalm\]: {from: title}
 #        - \bASAP\b: {from: title}
         - the.day.of.the.doctor                               # The following are titles that caused me issues from plugins
-    # Require at least 40 seeds of any torrent
+    # Require at least 10 seeds of any torrent
     torrent_alive:
       min_seeds: 10
       reject_for: 3 hours
@@ -239,6 +239,7 @@ templates:
       max: 20000
       min: 1000
     imdb_lookup: yes
+    trakt_lookup: yes
     seen_movies: strict # Don't download movies we've already seen
     # Check for already downloaded or currently downloading movies
     exists_movie:
@@ -308,9 +309,9 @@ templates:
 
   # This template uses the movie queue to find movies from various sources
   movies-queued:
-    movie_queue: yes
+    movie_queue: accept
     template: movies-discover
-    disable_plugin:
+    disable:
       - seen_movies
     discover:
       what:
@@ -319,12 +320,10 @@ templates:
     trakt_remove: # Remove from trakt.tv list when we accept an item
       username: '{{ secrets.trakt.username }}'
       password: '{{ secrets.trakt.password }}'
-      api_key: '{{ secrets.trakt.api_key }}'
       list: Movie Queue
     trakt_add: # Add accepted item to trakt.tv queue
       username: '{{ secrets.trakt.username }}'
       password: '{{ secrets.trakt.password }}'
-      api_key: '{{ secrets.trakt.api_key }}'
       list: watchlist
     set:
       label: my-movies
@@ -344,8 +343,10 @@ tasks:
       - series-daily.yml
     template:
       - tv-global
-    disable_builtins: [seen, seen_info_hash, retry_failed]
-    disable_plugin:
+    disable:
+      - seen
+      - seen_info_hash
+      - retry_failed
       - configure_series
       - trakt_list
       - inputs
@@ -377,8 +378,10 @@ tasks:
     template:
       - movies-global
       - movies-queued
-    disable_builtins: [seen, seen_info_hash, retry_failed]
-    disable_plugin:
+    disable:
+      - seen
+      - seen_info_hash
+      - retry_failed
       - discover
       - inputs
       - exists_movie
@@ -409,7 +412,7 @@ tasks:
   # accepted, then the original file is deleted
 #  Google-Music-Sync:
 #    priority: 3
-#    disable_builtins: [seen, seen_info_hash]
+#    disable: [seen, seen_info_hash]
 #    template: no_global # None of the global templates make sense here
 #    find:
 #      path: '/home/backend/Dropbox/Media/Music'
@@ -444,8 +447,8 @@ tasks:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
               password: '{{ secrets.trakt.password }}'
-              api_key: '{{ secrets.trakt.api_key }}'
-              custom: Favorite TV
+              list: Favorite TV
+              type: shows
       - configure_series:
           settings:
             target: 720p+ dvdscr+
@@ -456,8 +459,8 @@ tasks:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
               password: '{{ secrets.trakt.password }}'
-              api_key: '{{ secrets.trakt.api_key }}'
-              custom: Following TV
+              list: Following TV
+              type: shows
       - configure_series:
           settings:
             target: webrip+
@@ -468,13 +471,13 @@ tasks:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
               password: '{{ secrets.trakt.password }}'
-              api_key: '{{ secrets.trakt.api_key }}'
-              custom: Daily TV
+              list: Daily TV
+              type: shows
 
 
   My-TV-Shows-Find-Next-Favorite:
     template: [tv-global, tv-shows-find]
-    disable_plugin: inputs
+    disable: inputs
     discover:
       no_entries_ok: yes
       interval: 2 hours
@@ -482,7 +485,6 @@ tasks:
         - trakt_emit:
             username: '{{ secrets.trakt.username }}'
             password: '{{ secrets.trakt.password }}'
-            api_key: '{{ secrets.trakt.api_key }}'
             context: collected
             position: next
             list: Favorite TV
@@ -499,7 +501,7 @@ tasks:
 
   My-TV-Shows-Find-Next-Following:
     template: [tv-global, tv-shows-find]
-    disable_plugin: inputs
+    disable: inputs
     discover:
       no_entries_ok: yes
       interval: 2 hours
@@ -507,7 +509,6 @@ tasks:
         - trakt_emit:
             username: '{{ secrets.trakt.username }}'
             password: '{{ secrets.trakt.password }}'
-            api_key: '{{ secrets.trakt.api_key }}'
             list: Following TV
             context: collected
             position: next
@@ -532,7 +533,6 @@ tasks:
         - trakt_emit:
             username: '{{ secrets.trakt.username }}'
             password: '{{ secrets.trakt.password }}'
-            api_key: '{{ secrets.trakt.api_key }}'
             list: Daily TV
             context: collected
             position: next
@@ -550,7 +550,7 @@ tasks:
     template:
       - tv-global
       - tv-shows-find
-    disable_plugin: inputs
+    disable: inputs
     discover:
       what:
         - emit_series:
@@ -572,8 +572,8 @@ tasks:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
               password: '{{ secrets.trakt.password }}'
-              api_key: '{{ secrets.trakt.api_key }}'
-              custom: Favorite TV
+              list: Favorite TV
+              type: shows
       - configure_series:
           settings:
             target: 720p+ dvdscr+
@@ -586,8 +586,8 @@ tasks:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
               password: '{{ secrets.trakt.password }}'
-              api_key: '{{ secrets.trakt.api_key }}'
-              custom: Following TV
+              list: Following TV
+              type: shows
 
 
   # I'm always up for new shows, but some I genres I just can't stand. This
@@ -677,18 +677,19 @@ tasks:
     trakt_list:
       username: '{{ secrets.trakt.username }}'
       password: '{{ secrets.trakt.password }}'
-      api_key: '{{ secrets.trakt.api_key }}'
-      custom: Movie Queue
+      list: Movie Queue
+      type: movies
     no_entries_ok: yes
     accept_all: yes
-    queue_movies: yes
+    movie_queue: add
 
 
   # Cleans movies from the movie queue that we already have
   Clean-Movie-Queue:
     template: no_global # None of the global templates make sense here
-    disable_builtins: [seen, seen_info_hash]
-    disable_plugin:
+    disable:
+      - seen
+      - seen_info_hash
       - seen_movies
     accept_all: yes
     listdir:
@@ -699,11 +700,10 @@ tasks:
     # Rotten Tomatoes is broken, possibly forever :(
     #rottentomatoes_lookup: '{{ secrets.rottentomatoes.api_key }}'
     require_field: [movie_name, movie_year]
-    movie_queue: yes
+    movie_queue: accept
     trakt_remove:
       username: '{{ secrets.trakt.username }}'
       password: '{{ secrets.trakt.password }}'
-      api_key: '{{ secrets.trakt.api_key }}'
       list: Movie Queue
 
 
@@ -714,7 +714,7 @@ tasks:
     template:
       - movies-global
       - movies-queued
-    quality: 1080p+ bluray+ h264+ !mp3 !aac
+    quality: 1080p+ bluray+ h264+ truehd|dtshd|dd5.1|dts
 
 
   My-Movies-720p:
@@ -722,16 +722,16 @@ tasks:
     template:
       - movies-global
       - movies-queued
-    quality: 720p+ webdl+ xvid+ !mp3 !aac
+    quality: 720p+ webdl+ xvid+ truehd|dtshd|dd5.1|dts|ac3
     torrent_alive:
       min_seeds: 5
-    delay: 7 days # Wait 7 days for a 1080p movie before trying downloading 720p
+    delay: 14 days # Wait 14 days for a 1080p movie before trying downloading 720p
 
 
   # These task implement the movies-auto template
   Auto-Movies-1080p:
     priority: 130
-    quality: 1080p+ bluray+ h264+ !mp3 !aac
+    quality: 1080p+ bluray+ h264+ truehd|dtshd|dd5.1|dts
     template:
       - movies-global
       - movies-auto
@@ -740,13 +740,13 @@ tasks:
 
   Auto-Movies-720p:
     priority: 140
-    quality: 720p+ dvdrip+ xvid+ !mp3 !aac
+    quality: 720p+ dvdrip+ xvid+ truehd|dtshd|dd5.1|dts|ac3
     template:
       - movies-global
       - movies-auto
     set:
       label: movies-auto
-    delay: 7 days # Wait 7 days for a 1080p movie before trying downloading 720p
+    delay: 14 days # Wait 14 days for a 1080p movie before trying downloading 720p
 
 
 schedules:

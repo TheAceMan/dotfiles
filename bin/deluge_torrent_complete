@@ -8,6 +8,8 @@ LOG_FILE='/home/deluge/.flexget/torrent_complete.log'
 DOWNLOAD_PATH='/home/deluge/downloads/completed'
 STAGING_PATH='/raid/videos/staging'
 XBMC_HOST='Carina.singularity.net'
+PLEX_HOST='Faraday.singularity.net'
+X_PLEX_TOKEN='xxxxxxxxxxxxxxxxxxxx'
 # If you're using a local checkout of Flexget, use flexget_vanilla.
 # Otherwise use the one in your system
 FLEXGET_COMMAND='/home/deluge/Flexget/bin/flexget --logfile '\
@@ -57,9 +59,15 @@ log.debug("%s called with torrent_id='%s', torrent_name='%s', torrent_path='%s'.
 
 def chain():
     log.debug("Updating XBMC Library")
-    ret = subprocess.call('/usr/bin/xbmc-send --host='+XBMC_HOST+' --action="XBMC.updatelibrary(video)"', shell=True)
+    cmd = '/usr/bin/curl --data-binary \'{ "jsonrpc": "2.0", "method": "VideoLibrary.Scan", "id": "mybash"}\' -H \'content-type: application/json;\' http://'+XBMC_HOST+':8080/jsonrpc'
+    ret = subprocess.call(cmd, shell=True)
     if ret != 0:
         log.warning('Update XBMC command returned non-zero value %d.' % ret)
+    log.debug("Updating Plex Library")
+    cmd = '/usr/bin/curl http://'+PLEX_HOST+':32400/library/sections/2/refresh?X-Plex-Token='+X_PLEX_TOKEN
+    ret = subprocess.call(cmd, shell=True)
+    if ret != 0:
+        log.warning('Update Plex command returned non-zero value %d.' % ret)
     sys.exit(0)
 
 if DOWNLOAD_PATH not in torrent_path:

@@ -492,7 +492,7 @@ tasks:
             position: next
             list: Favorite TV
             #aired_only:
-            #  timeframe: 1 day
+            #  timeframe: 3 days
       from: [filler: yes]
     include: [ series-favorite.yml ]
     all_series:

@@ -10,15 +10,18 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
 # flexget
-alias "flexget"="~/Flexget/bin/flexget --logfile ~/Flexget/flexget.log"
-alias "flexget-daemon"="/home/deluge/Flexget/bin/flexget --logfile /home/deluge/.flexget/flexget.log daemon"
-alias "flexget-cron"="/usr/bin/time -o /home/deluge/.flexget/flexget.log -a -f 'Run time was %E' /home/deluge/Flexget/bin/flexget -c /home/deluge/.flexget/config.yml execute --cron"
-alias "flexget-sort-tv"="~/Flexget/bin/flexget --logfile /home/deluge/.flexget/flexget-sorting.log --debug -c /home/deluge/.flexget/sorting.yml execute --task Sort_Unpacked_TV_Shows --disable-advancement"
-alias "flexget-sort-premieres"="~/Flexget/bin/flexget --logfile /home/deluge/.flexget/flexget-sorting.log --debug -c /home/deluge/.flexget/sorting.yml execute --task Sort_Unpacked_TV_Premieres --disable-advancement"
-alias "flexget-sort-movies"="~/Flexget/bin/flexget --logfile /home/deluge/.flexget/flexget-sorting.log --debug -c /home/deluge/.flexget/sorting.yml execute --task Sort_Unpacked_Movies"
+alias "flexget"="$HOME/src/flexget/bin/flexget"
+alias "flexget-log-tail"="tail -n 300 $HOME/.flexget/flexget.log | less "
+alias "flexget-sort-tv"="sudo -u debian-deluged $HOME/src/flexget/bin/flexget -L verbose -c $HOME/.flexget/sorting.yml execute --task Sort_Unpacked_TV_Shows --disable-advancement"
+alias "flexget-sort-premieres"="sudo -u debian-deluged $HOME/src/flexget/bin/flexget -L verbose -c $HOME/.flexget/sorting.yml execute --task Sort_Unpacked_TV_Premieres --disable-advancement"
+alias "flexget-sort-movies"="sudo -u debian-deluged $HOME/src/flexget/bin/flexget -L verbose -c $HOME/.flexget/sorting.yml execute --task Sort_Unpacked_Movies"
+alias "flexget-sort-log-tail"="tail -n 300 $HOME/.flexget/flexget-sorting.log | less "
 
 # ack-grep
 alias "ack"="ack-grep"
 
 # git
 alias gdiff='git diff --no-index'
+
+# screen
+alias screen='rm -f $HOME/.ssh-auth-sock; ln -sf $SSH_AUTH_SOCK $HOME/.ssh-auth-sock; env SSH_AUTH_SOCK=$HOME/.ssh-auth-sock screen'

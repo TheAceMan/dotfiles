@@ -3,3 +3,6 @@ series:
       name_regexp: ^the.daily.show(.with.jon.stewart)?
   - The Nightly Show with Larry Wilmore:
       name_regexp: ^the.nightly.show(.with.larry.wilmore)?
+      identified_by: date
+  - Late Show with Stephen Colbert:
+      identified_by: date

@@ -1,23 +1,25 @@
 [Adblock Plus 2.0]
-! Version: 201403101736
+! Version: 201503061410
 ! Title: Jeff's Adblock List
-! Last modified: 10 Mar 2014 17:36 EST
+! Last modified: 6 Mar 2015 14:10 EST
 
 @@|http://*.cbssports.com
-
-www.google.com##DIV[class="gb_2"]
-www.google.com##DIV[class="ads-adcard"]
-www.google.com##DIV[class="ads-card ads-card-v2 cards-card-hideable-smooth-animation cards-collapsed"]
-mail.google.com##DIV[class="gb_2"]
 
 trakt.tv##DIV[id="large-banner-ad"]
 trakt.tv##DIV[id="small-banner-ad"]
 trakt.tv##DIV[id="large-banner-bottom-ad"]
 trakt.tv##DIV[id="small-banner-bottom-ad"]
+trakt.tv##DIV[id="huckster-desktop-wrapper"]
+trakt.tv##A[href="/vip"]
 
 www.youtube.com##DIV[id="alerts"]
 www.youtube.com##DIV[id="ticker"][class="ytg-base remind-identity"]
 www.youtube.com##DIV[id="confirmBox"][class="yt-alert yt-alert-default yt-alert-warn  "]
+
+wwws.mint.com##A[class="accounts-adv"]
+wwws.mint.com##TR[id="transaction-deal-row"][class="deals"]
+wwws.mint.com##DIV[id="advice-top-container"]
+wwws.mint.com##DIV[class="replace-with-iframe-below-header"]
 
 www.cplusplus.com##DIV[class="C_DonateBox"]
 www.cplusplus.com##DIV[class="C_DonateBox"]
@@ -25,3 +27,5 @@ www.cplusplus.com##DIV[class="C_DonateBox"]
 en.wikipedia.org##DIV[class="cn-fundraising"]
 
 facebook.com##DIV[id="pagelet_ego_pane"]
+
+wwws.mint.com##A[class="accounts-adv"]

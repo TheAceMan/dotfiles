@@ -4,17 +4,17 @@ import os
 import logging, logging.handlers
 import subprocess
 
-LOG_FILE='/home/deluge/.flexget/torrent_complete.log'
-DOWNLOAD_PATH='/home/deluge/downloads/completed'
-STAGING_PATH='/raid/videos/staging'
+LOG_FILE='/home/jawilson/.flexget/torrent_complete.log'
+DOWNLOAD_PATH='/media/raid/deluge/downloads/completed'
+STAGING_PATH='/media/raid/videos/staging'
 XBMC_HOST='Carina.singularity.net'
 PLEX_HOST='Faraday.singularity.net'
 X_PLEX_TOKEN='xxxxxxxxxxxxxxxxxxxx'
 # If you're using a local checkout of Flexget, use flexget_vanilla.
 # Otherwise use the one in your system
-FLEXGET_COMMAND='/home/deluge/Flexget/bin/flexget --logfile '\
-        '/home/deluge/.flexget/flexget-sorting.log'
-FLEXGET_SORTING_CONFIG='/home/deluge/.flexget/sorting.yml'
+FLEXGET_COMMAND='/home/jawilson/src/flexget/bin/flexget --logfile '\
+        '/home/jawilson/.flexget/flexget-sorting.log'
+FLEXGET_SORTING_CONFIG='/home/jawilson/.flexget/sorting.yml'
 FLEXGET_TASK_PREFIX='Sort_Unpacked_'
 
 # Staging subdirectory for each task in sorting.yml
@@ -58,11 +58,6 @@ log.debug("%s called with torrent_id='%s', torrent_name='%s', torrent_path='%s'.
     torrent_id, torrent_name, torrent_path))
 
 def chain():
-    log.debug("Updating XBMC Library")
-    cmd = '/usr/bin/curl --data-binary \'{ "jsonrpc": "2.0", "method": "VideoLibrary.Scan", "id": "mybash"}\' -H \'content-type: application/json;\' http://'+XBMC_HOST+':8080/jsonrpc'
-    ret = subprocess.call(cmd, shell=True)
-    if ret != 0:
-        log.warning('Update XBMC command returned non-zero value %d.' % ret)
     log.debug("Updating Plex Library")
     cmd = '/usr/bin/curl http://'+PLEX_HOST+':32400/library/sections/2/refresh?X-Plex-Token='+X_PLEX_TOKEN
     ret = subprocess.call(cmd, shell=True)
@@ -80,7 +75,7 @@ for path, task in FLEXGET_PATH_TASK.items():
 
         for root, dirs, files in os.walk(torrent_path+torrent_name, topdown=False):
             cmd='find "'+root+'" -maxdepth 1 -type f -regex ".*\.\(\part[0-9]+\.\)?r\([0-9]+\|ar\)$" '\
-                '| head -1 | xargs -I {} unrar x -o+ "{}" '+STAGING_PATH+path+torrent_id+'/'
+                '| head -1 | xargs -I {} unrar x -o+ "{}" "'+STAGING_PATH+path+torrent_id+'/"'
             log.debug('Shelling out: %s' % cmd)
             ret = subprocess.call(cmd, shell=True)
             if ret != 0:

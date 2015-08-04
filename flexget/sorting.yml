@@ -5,6 +5,9 @@
 # This config file is not a standard Flexget config, it is used
 # to sort my unrared movies and TV shows into their proper place
 #
+
+# Use the secrets plugin to separately store credentials, etc
+secrets: secretfile.yml
 templates:
   global:
     # Each feed must be run manually
@@ -17,13 +20,13 @@ templates:
     find:
       path: '/tmp'
       # We are looking for any video files that were extracted
-      regexp: '.*\.(avi|mkv|mpg|mp4)$'
+      regexp: '.*\.(avi|mkv|mpg|mp4|m4v)$'
       recursive: yes
     regexp:
       reject:
         - \bsample\b: {from: title}
     content_size:
-      min: 55
+      min: 52
 
 tasks:
   Sort_Unpacked_TV_Shows:
@@ -37,6 +40,37 @@ tasks:
       - series-favorite.yml
       - series-following.yml
       - series-daily.yml
+    sequence:
+      - configure_series:
+          settings:
+            tracking: no
+          from:
+            trakt_list:
+              username: '{{ secrets.trakt.username }}'
+              password: '{{ secrets.trakt.password }}'
+              list: Favorite TV
+              type: shows
+              strip_dates: yes
+      - configure_series:
+          settings:
+            tracking: no
+          from:
+            trakt_list:
+              username: '{{ secrets.trakt.username }}'
+              password: '{{ secrets.trakt.password }}'
+              list: Following TV
+              type: shows
+              strip_dates: yes
+      - configure_series:
+          settings:
+            tracking: no
+          from:
+            trakt_list:
+              username: '{{ secrets.trakt.username }}'
+              password: '{{ secrets.trakt.password }}'
+              list: Daily TV
+              type: shows
+              strip_dates: yes
     all_series:
       # Don't actually filter
       parse_only: yes
@@ -45,10 +79,10 @@ tasks:
     move:
       # Folder to move to
       to: >
-        /media/data/mythtv/videos/TV/{{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -') }}/{% if series_id_type == 'ep' %}Season {{ (tvdb_season|default(series_season))|pad(2) }}/{% endif %}
+        /media/data/mythtv/videos/TV/{{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -')|replace(',', '') }}/{% if series_id_type == 'ep' %}Season {{ (tvdb_season|default(series_season))|pad(2) }}/{% endif %}
       # Filename (inside of folder) to move to
       filename: >
-        {{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -') }} - {% if series_id_type == 'ep' and thetvdb_lookup_season_offset|default(False) %}{{ "S%0.2dE%0.2d"|format((series_season + thetvdb_lookup_season_offset),series_episode) }}{% else %}{{ series_id }}{% endif %}{% if ep_name|default(False) %} - {{ ep_name|replace('/', '_')|replace(':', ' -') }}{% endif %} - {{ quality }}
+        {{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -')|replace(',', '') }} - {% if series_id_type == 'ep' and thetvdb_lookup_season_offset|default(False) %}{{ "S%0.2dE%0.2d"|format((series_season + thetvdb_lookup_season_offset),series_episode) }}{% else %}{{ series_id }}{% endif %}{% if ep_name|default(False) %} - {{ ep_name|replace('/', '_')|replace(':', ' -')|replace(',', '') }}{% endif %} - {{ quality }}.{{ location[-3:] }}
       clean_source: 40
     if:
       - movedone:
@@ -77,10 +111,10 @@ tasks:
     move:
       # Folder to move to
       to: >
-        /media/data/mythtv/videos/premieres/{{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -') }}/{% if series_id_type == 'ep' %}Season {{ (tvdb_season|default(series_season))|pad(2) }}/{% endif %}
+        /media/data/mythtv/videos/premieres/{{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -')|replace(',', '') }}/{% if series_id_type == 'ep' %}Season {{ (tvdb_season|default(series_season))|pad(2) }}/{% endif %}
       # Filename (inside of folder) to move to
       filename: >
-        {{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -') }} - {% if series_id_type == 'ep' and thetvdb_lookup_season_offset|default(False) %}{{ "S%0.2dE%0.2d"|format((series_season + thetvdb_lookup_season_offset),series_episode) }}{% else %}{{ series_id }}{% endif %}{% if ep_name|default(False) %} - {{ ep_name|replace('/', '_')|replace(':', ' -') }}{% endif %} - {{ quality }}
+        {{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -')|replace(',', '') }} - {% if series_id_type == 'ep' and thetvdb_lookup_season_offset|default(False) %}{{ "S%0.2dE%0.2d"|format((series_season + thetvdb_lookup_season_offset),series_episode) }}{% else %}{{ series_id }}{% endif %}{% if ep_name|default(False) %} - {{ ep_name|replace('/', '_')|replace(':', ' -')|replace(',', '') }}{% endif %} - {{ quality }}.{{ location[-3:] }}
       clean_source: 40
 
   # Same as above
@@ -95,9 +129,9 @@ tasks:
     require_field: [movie_name, movie_year]
     move:
       to: >
-        "/media/data2/mythtv/videos/movies/_Movies/{{ imdb_name|replace('/', '_')|replace(':', ' -') }} ({{ imdb_year }})"
+        "/media/data2/mythtv/videos/movies/_Movies/{{ imdb_name|replace('/', '_')|replace(':', ' -')|replace(',', '') }} ({{ imdb_year }})/"
       filename: >
-        {{ imdb_name|replace('/', '_')|replace(':', ' -') }} ({{ imdb_year }}) - {{ quality }}
+        {{ imdb_name|replace('/', '_')|replace(':', ' -')|replace(',', '') }} ({{ imdb_year }}) - {{ quality }}.{{ location[-3:] }}
       clean_source: 1000
       along:
         - srt

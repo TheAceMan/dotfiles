@@ -1,21 +1,24 @@
 series:
-  - American Dad:
-      name_regexp: ^american.dad(!)?
-      season_offset: 1
-      begin: S10E01
+  - Aqua Teen Hunger Force:
+      alternate_name:
+          - Aqua Unit Patrol Squad 1
+          - Aqua Something You Know Whatever
+          - Aqua TV Show Show
+          - Aqua Teen Hunger Force Forever
+          - ATHF
       set:
-        series_name: "American Dad"
-  - Aqua TV Show Show:
-      name_regexp: ^aqua.((teen.hunger.force)|(unit.patrol.squad.1)|(something.you.know.whatever)|(tv.show.show))
-      set:
-        series_name: "Aqua Teen Hunger Force"
-        tvdb_series_name: "{{ series_name }}"
+        tvdb_id: 77120
+        tvdb_series_name: "Aqua Teen Hunger Force"
   - Archer (2009):
       name_regexp: ^archer(.2009)?
   - Last Man Standing (2011):
+      alternate_name:
+          - Last Man Standing (US)
       name_regexp: ^last.man.standing(.us)?(.2011)?
-  - Last Week Tonight With John Oliver:
+  - Last Week Tonight with John Oliver:
       identified_by: ep
+      set:
+        tvdb_id: 278518
   - "It's Always Sunny in Philadelphia":
       begin: S07E01
   - MythBusters:
@@ -26,12 +29,5 @@ series:
       name_regexp: ^the.venture.bro(ther)?s\.?
   - The Simpsons:
       begin: S23E01
-  - Two and a Half Men:
-      begin: S09E01
-if:
-  - "series_name == 'American Dad'":
-      set:
-        tvdb_series_name: "{{ series_name }}"
-  - "series_name == 'Aqua Teen Hunger Force'":
-      set:
-        tvdb_series_name: "{{ series_name }}"
+  - Tosh.0:
+      begin: S03E07

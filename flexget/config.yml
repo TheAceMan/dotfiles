@@ -124,12 +124,12 @@ templates:
     #  - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
       - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Atv/?rss=1', silent: yes }   # Kickass (TV)
       - rss: { url: 'http://www.torlock.com/television/rss.xml', silent: yes }  # TorLock (TV)
-#      - rss: { url: 'http://torrentz.eu/feed_verified?q=tv', silent: yes }      # Torrentz (Verified only, TV)
+    #  - rss: { url: 'http://torrentz.eu/feed_verified?q=tv', silent: yes }      # Torrentz (Verified only, TV)
 #      - rss: { url: 'http://torrentz.me/feed_verified?q=tv', silent: yes }
-#      - rss: { url: 'http://ezrss.it/feed/', silent: yes }                      # EZRSS
+    #  - rss: { url: 'http://ezrss.it/feed/', silent: yes }                      # EZRSS
       # - rss: { url: 'http://kat.torrenticity.com/tv/?rss=1', silent: yes }
-#      - rss: { url: 'http://showrss.karmorra.info/feeds/all.rss', silent: yes } # Karmorra (All)
-#      - rss: { url: 'http://rss.bt-chat.com/?group=3', silent: yes }            # BT-Chat (EZTV)
+    #  - rss: { url: 'http://showrss.karmorra.info/feeds/all.rss', silent: yes } # Karmorra (All)
+    #  - rss: { url: 'http://rss.bt-chat.com/?group=3', silent: yes }            # BT-Chat (EZTV)
 #      - rss: { url: 'http://rss.bt-chat.com/?group=2', silent: yes }            # BT-Chat (VTV)
 #      - rss: { url: 'http://rss.bt-chat.com/?cat=2', silent: yes }              # BT-Chat (category TV)
 #      - rss: { url: 'http://rss.thepiratebay.se/208', silent: yes }            # The Pirate Bay (Highres - TV shows)
@@ -167,9 +167,12 @@ templates:
       - "/media/data/mythtv/videos/unrar/staging/tv_shows/"
       - "/media/data/mythtv/videos/unrar/staging/tv_premieres/"
       - "/media/data/torrent/inprogress/"
+    thexem:
+      source: scene
+      destination: tvdb
     # Look up info on TheTVDB.com to fill in extra info
     thetvdb_lookup: yes
-    trakt_lookup: yes
+    #trakt_lookup: yes # Deprecated
     require_field: [series_name, series_id]
     pushbullet:
       apikey: '{{ secrets.pushbullet.apikey }}'
@@ -252,7 +255,7 @@ templates:
       max: 20000
       min: 1000
     imdb_lookup: yes
-    trakt_lookup: yes
+    #trakt_lookup: yes # Deprecated
 #    seen_movies: strict # Don't download movies we've already seen
     # Check for already downloaded or currently downloading movies
     exists_movie:
@@ -372,10 +375,11 @@ tasks:
       parse_only: yes
     plugin_priority:
       exec: 0
-    find:
+    filesystem:
       path: '/home/backend/Dropbox/torrents/TV'
-      regexp: '.*\.torrent$'
       recursive: yes
+      retrieve: files
+      regexp: '.*\.torrent$'
     no_entries_ok: yes
     verify_ssl_certificates: no
     exec:
@@ -405,10 +409,11 @@ tasks:
       - torrent_alive
     plugin_priority:
       exec: 0
-    find:
+    filesystem:
       path: '/home/backend/Dropbox/torrents/Movies'
-      regexp: '.*\.torrent$'
       recursive: yes
+      retrieve: files
+      regexp: '.*\.torrent$'
     no_entries_ok: yes
     exec:
       on_output:
@@ -419,26 +424,71 @@ tasks:
       label: local-movies
 
 
-  # Adds music from a Dropbox folder to my Google Music library
-  # Depends on a great script available here: https://github.com/thebigmunch/gmusicapi-scripts
-  # Use a local folder (synced with Dropbox) as a source
-  # I can drop music in this folder and they are synced with Dropbox, always
-  # accepted, then the original file is deleted
-#  Google-Music-Sync:
-#    priority: 3
-#    disable:
-#      - seen
-#      - seen_info_hash
-#    template: no_global # None of the global templates make sense here
-#    find:
-#      path: '/home/backend/Dropbox/Media/Music'
-#      regexp: '.*\.(mp3|flac|m4a|ogg)$'
-#      recursive: yes
-#    no_entries_ok: yes
-#    accept_all: yes
-#    exec:
-#      on_output:
-#        for_accepted: '"/media/backend/src/gmusicapi-scripts/gmsync.py" -q -l -m "{{location}}" && rm "{{location}}"'
+  Sync-TV-Shows:
+    manual: yes
+    template: no_global # None of the global templates make sense here
+    filesystem:
+      path:
+        - /media/raid/videos/TV Shows/
+        - /media/raid/videos/AK Shows/
+      recursive: yes
+      retrieve: files
+      regexp: '.*\.(avi|mkv|mp4|mpg|m4v)$'
+    regexp:
+      reject:
+        - \bsample\b: {from: title}
+    disable: builtins
+    thetvdb_lookup: yes
+    thexem:
+      source: tvdb
+      destination: scene
+    include:
+      - series-favorite.yml
+      - series-following.yml
+      - series-daily.yml
+      - series-ak.yml
+    sequence:
+      - configure_series:
+          settings:
+            tracking: no
+          from:
+            trakt_list:
+              username: '{{ secrets.trakt.username }}'
+              password: '{{ secrets.trakt.password }}'
+              list: Favorite TV
+              type: shows
+              strip_dates: yes
+      - configure_series:
+          settings:
+            tracking: no
+          from:
+            trakt_list:
+              username: '{{ secrets.trakt.username }}'
+              password: '{{ secrets.trakt.password }}'
+              list: Following TV
+              type: shows
+              strip_dates: yes
+      - configure_series:
+          settings:
+            tracking: no
+          from:
+            trakt_list:
+              username: '{{ secrets.trakt.username }}'
+              password: '{{ secrets.trakt.password }}'
+              list: Daily TV
+              type: shows
+              strip_dates: yes
+      - configure_series:
+          settings:
+            tracking: no
+          from:
+            trakt_list:
+              username: '{{ secrets.trakt.username }}'
+              password: '{{ secrets.trakt.password }}'
+              list: AK TV
+              type: shows
+              strip_dates: yes
+    exec: echo "Found {{ series_name }} - {{ series_id }} ({{ location }})" >> /dev/null
 
 
   # All of the TV-related tasks pull in the tv-global template, this gives
@@ -680,8 +730,10 @@ tasks:
         timeframe: 3 days
         quality: webrip+
       from:
-        listdir:
-          - "/media/data/mythtv/videos/premieres/"
+        filesystem:
+          path: "/media/data/mythtv/videos/premieres/"
+          recursive: no
+          retrieve: dirs
     set:
       movedone: >
         /media/data/mythtv/videos/premieres/{{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -')|replace(',', '') }}/{% if series_id_type == 'ep' %}Season {{ (tvdb_season|default(series_season))|pad(2) }}/{% endif %}
@@ -701,9 +753,12 @@ tasks:
       - seen_info_hash
       - seen_movies
     accept_all: yes
-    listdir:
-      - /media/data/mythtv/videos/movies/_Movies/
-      - /media/data2/mythtv/videos/movies/_Movies/
+    filesystem:
+      path:
+        - /media/data/mythtv/videos/movies/_Movies/
+        - /media/data2/mythtv/videos/movies/_Movies/
+      recursive: no
+      retrieve: dirs
     imdb_lookup: yes
     tmdb_lookup: yes
     # Rotten Tomatoes is broken, possibly forever :(
@@ -780,7 +835,7 @@ schedules:
   #
   # Local
   #
-  - tasks: [ 'Local-Torrents-*' ]#, 'Google-Music-Sync' ]
+  - tasks: [ 'Local-Torrents-*' ]
     interval:
       minutes: 15
 

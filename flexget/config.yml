@@ -41,7 +41,7 @@ templates:
     # Make there's 50GB free before adding more downloads
     free_space:
       path: /media/data
-      space: 50
+      space: 5
     # Make sure all filenames are Windows safe (for samba)
     pathscrub: windows
     make_rss:
@@ -61,6 +61,9 @@ templates:
         - \btrailer\b: {from: title}                          # I've gotten a few trailers that matched as movies. VERY annoying
         - \bR5\b: {from: title}                               # The following are poor quality types that somehow got through the quality
         - \bWEBSCR\b: {from: title}                           # features usually due to the title including a keyword like "720p" as well
+        - Temporada: {from: title}                        # spanish dubbed
+        - temporada: {from: title}                        # spanish dubbed
+        - ESPA: {from: title}                             # spanish dubbed
         - \bscreener\b: {from: title}
         - \bTS\b: {from: title}
         - \bCam\b: {from: title}
@@ -119,30 +122,32 @@ templates:
     # This is a TON of feeds, you probably don't need so many, but why not?
     inputs:
     #  - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
-      - rss: 'https://kat.cr/usearch/verified%3A1%20category%3Atv/?rss=1'   # Kickass (TV)
+      - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Atv/?rss=1', silent: yes }   # Kickass (TV)
       - rss: { url: 'http://www.torlock.com/television/rss.xml', silent: yes }  # TorLock (TV)
-      - rss: { url: 'http://torrentz.eu/feed_verified?q=tv', silent: yes }      # Torrentz (Verified only, TV)
-      - rss: { url: 'http://torrentz.me/feed_verified?q=tv', silent: yes }
-      - rss: { url: 'http://ezrss.it/feed/', silent: yes }                      # EZRSS
+#      - rss: { url: 'http://torrentz.eu/feed_verified?q=tv', silent: yes }      # Torrentz (Verified only, TV)
+#      - rss: { url: 'http://torrentz.me/feed_verified?q=tv', silent: yes }
+#      - rss: { url: 'http://ezrss.it/feed/', silent: yes }                      # EZRSS
       # - rss: { url: 'http://kat.torrenticity.com/tv/?rss=1', silent: yes }
-      - rss: { url: 'http://showrss.karmorra.info/feeds/all.rss', silent: yes } # Karmorra (All)
-      - rss: { url: 'http://rss.bt-chat.com/?group=3', silent: yes }            # BT-Chat (EZTV)
-      - rss: { url: 'http://rss.bt-chat.com/?group=2', silent: yes }            # BT-Chat (VTV)
-      - rss: { url: 'http://rss.bt-chat.com/?cat=2', silent: yes }              # BT-Chat (category TV)
-      - rss: { url: 'http://rss.thepiratebay.se/208', silent: yes }            # The Pirate Bay (Highres - TV shows)
-      - rss: { url: 'http://rss.thepiratebay.se/205', silent: yes }
+#      - rss: { url: 'http://showrss.karmorra.info/feeds/all.rss', silent: yes } # Karmorra (All)
+#      - rss: { url: 'http://rss.bt-chat.com/?group=3', silent: yes }            # BT-Chat (EZTV)
+#      - rss: { url: 'http://rss.bt-chat.com/?group=2', silent: yes }            # BT-Chat (VTV)
+#      - rss: { url: 'http://rss.bt-chat.com/?cat=2', silent: yes }              # BT-Chat (category TV)
+#      - rss: { url: 'http://rss.thepiratebay.se/208', silent: yes }            # The Pirate Bay (Highres - TV shows)
+#      - rss: { url: 'http://rss.thepiratebay.se/205', silent: yes }
 #      - rss: { url: 'http://h33t.com/rss', silent: yes }                        # H33T (better tracker list)
-#      - rss: { url: 'http://tokyotosho.info/rss.php?filter=1&entries=450', silent: yes }
-#      - rss: { url: 'http://www.nyaa.eu/?page=rss', silent: yes }
+      - rss: { url: 'http://h33t.to/rss', silent: yes }                        # H33T (better tracker list)
+      - rss: { url: 'http://tokyotosho.info/rss.php?filter=1&entries=450', silent: yes }
+      - rss: { url: 'http://www.nyaa.eu/?page=rss', silent: yes }
       - rss: { url: 'http://extratorrent.com/rss.xml?cid=8&type=last', silent: yes }
-#      - rss: { url: 'http://www.torrentfunk.com/tv/rss.xml', silent: yes }
+      - rss: { url: 'http://www.torrentfunk.com/tv/rss.xml', silent: yes }
       - rss: { url: 'http://kickass.to/tv/?rss=1', silent: yes }
       - rss: { url: 'http://www.monova.org/rss.php?type=catname&id=8', silent: yes }
 #      - rss: { url: 'http://rss.thepiratebay.sx/200', silent: yes }
-      - rss: { url: 'http://torrentz.eu/feed?q=housewives', silent: yes }
-      - rss: { url: 'http://torrentz.eu/feed?q=watch+what+happens+live', silent: yes }
+#      - rss: { url: 'http://torrentz.eu/feed?q=housewives', silent: yes }
+      - rss: { url: 'http://kickass.to/usearch/housewives/?rss=1', silent: yes }
+#      - rss: { url: 'http://torrentz.eu/feed?q=watch+what+happens+live', silent: yes }
 #      - rss: { url: 'http://www.dailytvtorrents.org/rss/allshows', silent: yes }
-      - rss: { url: 'http://showrss.info/feeds/all.rss', silent: yes }
+      - rss: { url: 'http://showrss.info/feeds/all.rss', silent: yes } # Karmorra (All)
     if:
       - "has_field('category')":
           regexp:
@@ -190,7 +195,7 @@ templates:
 
   tv-shows-find:
     discover:
-      no_entries_ok: yes
+      #no_entries_ok: yes
       what: [filler: yes]
       from:
         - torrentleech:
@@ -211,7 +216,7 @@ templates:
   movies-global:
     inputs:
     #  - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
-      - rss: 'https://kat.cr/usearch/verified%3A1%20category%3Amovies/?rss=1' # Kickass (Movies)
+      - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Amovies/?rss=1', silent: yes } # Kickass (Movies)
       - rss: { url: 'http://www.torlock.com/movies/rss.xml', silent: yes }     # TorLock (Movies)
       - rss: { url: 'http://kickass.to/movies/?rss=1', silent: yes }
       - rss: { url: 'http://yts.re/rss', silent: yes }
@@ -477,7 +482,7 @@ tasks:
       - configure_series:
           settings:
             target: webrip+
-            timeframe: 4 hours
+            timeframe: 12 hours
 #            quality: preair+
             tracking: backfill
           from:
@@ -494,7 +499,7 @@ tasks:
     disable:
       - inputs
     discover:
-      no_entries_ok: yes
+      #no_entries_ok: yes
       interval: 2 hours
       what:
         - trakt_emit:
@@ -503,7 +508,7 @@ tasks:
             context: collected
             position: next
             list: Favorite TV
-            aired_timeframe: 14 days
+            #aired_timeframe: 14 days
       from: [filler: yes]
     include: [ series-favorite.yml ]
     all_series:
@@ -518,7 +523,7 @@ tasks:
     disable:
       - inputs
     discover:
-      no_entries_ok: yes
+      #no_entries_ok: yes
       interval: 2 hours
       what:
         - trakt_emit:
@@ -527,7 +532,7 @@ tasks:
             list: Following TV
             context: collected
             position: next
-            aired_timeframe: 14 days
+            #aired_timeframe: 14 days
       from: [filler: yes]
     include: [ series-following.yml ]
     all_series:
@@ -542,7 +547,7 @@ tasks:
     disable:
       - inputs
     discover:
-      no_entries_ok: yes
+      #no_entries_ok: yes
       interval: 2 hours
       what:
         - trakt_emit:
@@ -551,7 +556,7 @@ tasks:
             list: Daily TV
             context: collected
             position: next
-            aired_timeframe: 14 days
+            #aired_timeframe: 14 days
       from: [filler: yes]
     include: [ series-daily.yml ]
     all_series:

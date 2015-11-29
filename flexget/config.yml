@@ -63,7 +63,7 @@ templates:
         - \bWEBSCR\b: {from: title}                           # features usually due to the title including a keyword like "720p" as well
         - Temporada: {from: title}                        # spanish dubbed
         - temporada: {from: title}                        # spanish dubbed
-        - ESPA: {from: title}                             # spanish dubbed
+        - ESPA?OL: {from: title}                          # spanish dubbed
         - \bscreener\b: {from: title}
         - \bTS\b: {from: title}
         - \bCam\b: {from: title}
@@ -72,6 +72,7 @@ templates:
         - \[TNTVillage\]: {from: title}
         - \[facepalm\]: {from: title}
 #        - \bASAP\b: {from: title}
+        - '265'
         - the.day.of.the.doctor                               # The following are titles that caused me issues from plugins
     # Require at least 10 seeds of any torrent
     torrent_alive:
@@ -121,31 +122,33 @@ templates:
   tv-global:
     # This is a TON of feeds, you probably don't need so many, but why not?
     inputs:
-    #  - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
+#      - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
       - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Atv/?rss=1', silent: yes }   # Kickass (TV)
       - rss: { url: 'http://www.torlock.com/television/rss.xml', silent: yes }  # TorLock (TV)
-    #  - rss: { url: 'http://torrentz.eu/feed_verified?q=tv', silent: yes }      # Torrentz (Verified only, TV)
-#      - rss: { url: 'http://torrentz.me/feed_verified?q=tv', silent: yes }
-    #  - rss: { url: 'http://ezrss.it/feed/', silent: yes }                      # EZRSS
-      # - rss: { url: 'http://kat.torrenticity.com/tv/?rss=1', silent: yes }
-    #  - rss: { url: 'http://showrss.karmorra.info/feeds/all.rss', silent: yes } # Karmorra (All)
-    #  - rss: { url: 'http://rss.bt-chat.com/?group=3', silent: yes }            # BT-Chat (EZTV)
+      - rss: { url: 'http://torrentz.eu/feed_verified?q=tv', silent: yes }      # Torrentz (Verified only, TV)
+#      - rss: { url: 'http://torrentz.me/feed_verified?q=tv', silent: yes } #same as .eu
+#      - rss: { url: 'http://ezrss.it/feed/', silent: yes }                      # EZRSS
+      - rss: { url: 'https://eztv.ag/ezrss.xml', silent: yes }                      # EZRSS
+#      - rss: { url: 'http://kat.torrenticity.com/tv/?rss=1', silent: yes }
+#      - rss: { url: 'http://showrss.karmorra.info/feeds/all.rss', silent: yes } # Karmorra (All)
+      - rss: { url: 'http://showrss.info/feeds/schedule/schedule.rss', silent: yes } # Karmorra (All)
+#      - rss: { url: 'http://rss.bt-chat.com/?group=3', silent: yes }            # BT-Chat (EZTV)
 #      - rss: { url: 'http://rss.bt-chat.com/?group=2', silent: yes }            # BT-Chat (VTV)
 #      - rss: { url: 'http://rss.bt-chat.com/?cat=2', silent: yes }              # BT-Chat (category TV)
 #      - rss: { url: 'http://rss.thepiratebay.se/208', silent: yes }            # The Pirate Bay (Highres - TV shows)
 #      - rss: { url: 'http://rss.thepiratebay.se/205', silent: yes }
 #      - rss: { url: 'http://h33t.com/rss', silent: yes }                        # H33T (better tracker list)
-      - rss: { url: 'http://h33t.to/rss', silent: yes }                        # H33T (better tracker list)
+#      - rss: { url: 'http://h33t.to/rss', silent: yes }                        # H33T (better tracker list)
       - rss: { url: 'http://tokyotosho.info/rss.php?filter=1&entries=450', silent: yes }
       - rss: { url: 'http://www.nyaa.eu/?page=rss', silent: yes }
-      - rss: { url: 'http://extratorrent.com/rss.xml?cid=8&type=last', silent: yes }
+      - rss: { url: 'http://extratorrent.cc/rss.xml?cid=8&type=last', silent: yes } #same as extratorrent.com
       - rss: { url: 'http://www.torrentfunk.com/tv/rss.xml', silent: yes }
       - rss: { url: 'http://kickass.to/tv/?rss=1', silent: yes }
-      - rss: { url: 'http://www.monova.org/rss.php?type=catname&id=8', silent: yes }
+#      - rss: { url: 'http://www.monova.org/rss.php?type=catname&id=8', silent: yes }
 #      - rss: { url: 'http://rss.thepiratebay.sx/200', silent: yes }
-#      - rss: { url: 'http://torrentz.eu/feed?q=housewives', silent: yes }
+      - rss: { url: 'http://torrentz.eu/feed?q=housewives', silent: yes }
       - rss: { url: 'http://kickass.to/usearch/housewives/?rss=1', silent: yes }
-#      - rss: { url: 'http://torrentz.eu/feed?q=watch+what+happens+live', silent: yes }
+      - rss: { url: 'http://torrentz.eu/feed?q=watch+what+happens+live', silent: yes }
 #      - rss: { url: 'http://www.dailytvtorrents.org/rss/allshows', silent: yes }
       - rss: { url: 'http://showrss.info/feeds/all.rss', silent: yes } # Karmorra (All)
     if:
@@ -199,16 +202,14 @@ templates:
   tv-shows-find:
     discover:
       #no_entries_ok: yes
-      what: [filler: yes]
+      what: [filler: yes] # Always produce entries
       from:
-        - torrentleech:
-            rss_key: '{{ secrets.torrentleech.rss_key }}'
-            username: '{{ secrets.torrentleech.username }}'
-            password: '{{ secrets.torrentleech.password }}'
-            category: ['Episodes HD', 'Episodes']
+#        - torrentleech:
+#            rss_key: '{{ secrets.torrentleech.rss_key }}'
+#            username: '{{ secrets.torrentleech.username }}'
+#            password: '{{ secrets.torrentleech.password }}'
+#            category: ['Episodes HD', 'Episodes']
         - flexget_archive: [tv]
-        - publichd:
-            category: ['HDTV', 'SDTV', 'TV WEB-DL']
         - kat:
             category: tv
             verified: yes
@@ -218,18 +219,18 @@ templates:
   # as well as some other configurations.
   movies-global:
     inputs:
-    #  - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
+#      - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
       - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Amovies/?rss=1', silent: yes } # Kickass (Movies)
       - rss: { url: 'http://www.torlock.com/movies/rss.xml', silent: yes }     # TorLock (Movies)
       - rss: { url: 'http://kickass.to/movies/?rss=1', silent: yes }
-      - rss: { url: 'http://yts.re/rss', silent: yes }
-#      - rss: { url: 'http://www.torrentfunk.com/movies/rss.xml', silent: yes }
+      - rss: { url: 'https://yts.ag/rss', silent: yes }
+      - rss: { url: 'http://www.torrentfunk.com/movies/rss.xml', silent: yes }
       - rss: { url: 'http://extratorrent.com/rss.xml?cid=4&type=last', silent: yes }
       - rss: { url: 'http://torrentz.eu/feed_verified?q=movies', silent: yes } # Torrentz (Verified Movies)
-      - rss: { url: 'http://rss.thepiratebay.se/207', silent: yes }           # The Pirate Bay (Highres - Movies)
-      - rss: { url: 'http://rss.thepiratebay.se/201', silent: yes }           # The Pirate Bay (Highres - Movies)
+#      - rss: { url: 'http://rss.thepiratebay.se/207', silent: yes }           # The Pirate Bay (Highres - Movies)
+#      - rss: { url: 'http://rss.thepiratebay.se/201', silent: yes }           # The Pirate Bay (Highres - Movies)
 #      - rss: { url: 'http://rss.thepiratebay.sx/200', silent: yes }
-      - rss: { url: 'http://www.monova.org/rss.php?type=catname&id=1', silent: yes }
+#      - rss: { url: 'http://www.monova.org/rss.php?type=catname&id=1', silent: yes }
     # Some feeds might include TV Shows, ignore them
     if:
       - "has_field('category')":
@@ -288,14 +289,12 @@ templates:
   movies-discover:
     discover:
       from:
-        - torrentleech:
-            rss_key: '{{ secrets.torrentleech.rss_key }}'
-            username: '{{ secrets.torrentleech.username }}'
-            password: '{{ secrets.torrentleech.password }}'
-            category: ['HD', 'BDRip', 'DVDRip', 'DVDR', 'Documentaries']
+#        - torrentleech:
+#            rss_key: '{{ secrets.torrentleech.rss_key }}'
+#            username: '{{ secrets.torrentleech.username }}'
+#            password: '{{ secrets.torrentleech.password }}'
+#            category: ['HD', 'BDRip', 'DVDRip', 'DVDR', 'Documentaries']
         - flexget_archive: [movies]
-        - publichd:
-            category: ['BluRay 1080p', 'BluRay 720p']
         - kat:
             category: movies
             verified: yes
@@ -336,11 +335,11 @@ templates:
       from: [ filler: yes ] # Always produce entries
     trakt_remove: # Remove from Trakt list when we accept an item
       username: '{{ secrets.trakt.username }}'
-      password: '{{ secrets.trakt.password }}'
+      account: '{{ secrets.trakt.account }}'
       list: Movie Queue
     trakt_add: # Add accepted item to my Trakt watchlist
       username: '{{ secrets.trakt.username }}'
-      password: '{{ secrets.trakt.password }}'
+      account: '{{ secrets.trakt.account }}'
       list: watchlist
     set:
       label: my-movies
@@ -358,6 +357,7 @@ tasks:
       - series-favorite.yml
       - series-following.yml
       - series-daily.yml
+      - series-ak.yml
     template:
       - tv-global
     disable:
@@ -429,8 +429,8 @@ tasks:
     template: no_global # None of the global templates make sense here
     filesystem:
       path:
-        - /media/raid/videos/TV Shows/
-        - /media/raid/videos/AK Shows/
+        - /media/data/mythtv/videos/TV/
+        - /media/data/mythtv/videos/AK Shows/
       recursive: yes
       retrieve: files
       regexp: '.*\.(avi|mkv|mp4|mpg|m4v)$'
@@ -454,7 +454,7 @@ tasks:
           from:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
-              password: '{{ secrets.trakt.password }}'
+              account: '{{ secrets.trakt.account }}'
               list: Favorite TV
               type: shows
               strip_dates: yes
@@ -464,7 +464,7 @@ tasks:
           from:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
-              password: '{{ secrets.trakt.password }}'
+              account: '{{ secrets.trakt.account }}'
               list: Following TV
               type: shows
               strip_dates: yes
@@ -474,7 +474,7 @@ tasks:
           from:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
-              password: '{{ secrets.trakt.password }}'
+              account: '{{ secrets.trakt.account }}'
               list: Daily TV
               type: shows
               strip_dates: yes
@@ -484,7 +484,7 @@ tasks:
           from:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
-              password: '{{ secrets.trakt.password }}'
+              account: '{{ secrets.trakt.account }}'
               list: AK TV
               type: shows
               strip_dates: yes
@@ -512,7 +512,7 @@ tasks:
           from:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
-              password: '{{ secrets.trakt.password }}'
+              account: '{{ secrets.trakt.account }}'
               list: Favorite TV
               type: shows
               strip_dates: yes
@@ -525,7 +525,7 @@ tasks:
           from:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
-              password: '{{ secrets.trakt.password }}'
+              account: '{{ secrets.trakt.account }}'
               list: Following TV
               type: shows
               strip_dates: yes
@@ -538,8 +538,21 @@ tasks:
           from:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
-              password: '{{ secrets.trakt.password }}'
+              account: '{{ secrets.trakt.account }}'
               list: Daily TV
+              type: shows
+              strip_dates: yes
+      - configure_series:
+          settings:
+            target: 720p+ dvdscr+
+            timeframe: 3 days
+#            quality: 480p+ webrip+
+            tracking: backfill
+          from:
+            trakt_list:
+              username: '{{ secrets.trakt.username }}'
+              account: '{{ secrets.trakt.account }}'
+              list: AK TV
               type: shows
               strip_dates: yes
 
@@ -554,7 +567,7 @@ tasks:
       what:
         - trakt_emit:
             username: '{{ secrets.trakt.username }}'
-            password: '{{ secrets.trakt.password }}'
+            account: '{{ secrets.trakt.account }}'
             context: collected
             position: next
             list: Favorite TV
@@ -578,13 +591,20 @@ tasks:
       what:
         - trakt_emit:
             username: '{{ secrets.trakt.username }}'
-            password: '{{ secrets.trakt.password }}'
+            account: '{{ secrets.trakt.account }}'
             list: Following TV
             context: collected
             position: next
             #aired_timeframe: 14 days
+        - trakt_emit:
+            username: '{{ secrets.trakt.username }}'
+            account: '{{ secrets.trakt.account }}'
+            list: AK TV
+            context: collected
+            position: next
+            #aired_timeframe: 14 days
       from: [filler: yes]
-    include: [ series-following.yml ]
+    include: [ series-following.yml, series-ak.yml ]
     all_series:
       target: 720p+ dvdscr+
       timeframe: 3 days
@@ -602,7 +622,7 @@ tasks:
       what:
         - trakt_emit:
             username: '{{ secrets.trakt.username }}'
-            password: '{{ secrets.trakt.password }}'
+            account: '{{ secrets.trakt.account }}'
             list: Daily TV
             context: collected
             position: next
@@ -631,6 +651,7 @@ tasks:
     include:
       - series-favorite.yml
       - series-following.yml
+      - series-ak.yml
     sequence:
       - configure_series:
           settings:
@@ -643,7 +664,7 @@ tasks:
           from:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
-              password: '{{ secrets.trakt.password }}'
+              account: '{{ secrets.trakt.account }}'
               list: Favorite TV
               type: shows
               strip_dates: yes
@@ -658,8 +679,23 @@ tasks:
           from:
             trakt_list:
               username: '{{ secrets.trakt.username }}'
-              password: '{{ secrets.trakt.password }}'
+              account: '{{ secrets.trakt.account }}'
               list: Following TV
+              type: shows
+              strip_dates: yes
+      - configure_series:
+          settings:
+            target: 720p+ dvdscr+
+            timeframe: 3 days
+#            quality: 480p+ webrip+
+            tracking: backfill
+            propers: no
+            upgrade: no
+          from:
+            trakt_list:
+              username: '{{ secrets.trakt.username }}'
+              account: '{{ secrets.trakt.account }}'
+              list: AK TV
               type: shows
               strip_dates: yes
 
@@ -767,7 +803,7 @@ tasks:
     movie_queue: accept
     trakt_remove:
       username: '{{ secrets.trakt.username }}'
-      password: '{{ secrets.trakt.password }}'
+      account: '{{ secrets.trakt.account }}'
       list: Movie Queue
 
 
@@ -780,7 +816,7 @@ tasks:
       list: watchlist
     trakt_list:
       username: '{{ secrets.trakt.username }}'
-      password: '{{ secrets.trakt.password }}'
+      account: '{{ secrets.trakt.account }}'
       list: Movie Queue
       type: movies
     no_entries_ok: yes

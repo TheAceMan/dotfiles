@@ -20,9 +20,9 @@ templates:
     filesystem:
       path: '/tmp'
       # We are looking for any video files that were extracted
+      regexp: '.*\.(avi|mkv|mpg|mp4|m4v)$'
       recursive: yes
       retrieve: files
-      regexp: '.*\.(avi|mkv|mpg|mp4|m4v)$'
     regexp:
       reject:
         - \bsample\b: {from: title}

@@ -95,15 +95,11 @@ tasks:
     move:
       # Folder to move to
       to: >
-        /media/data/mythtv/videos/TV/{{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -')|replace(',', '') }}/{% if series_id_type == 'ep' %}Season {{ (tvdb_season|default(series_season))|pad(2) }}/{% endif %}
+        /{% if movedone|default(False) %}{{ movedone|replace('/', '', 1) }}{% else %}media/data/mythtv/videos/TV/{{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -')|replace(',', '') }}/{% if series_id_type == 'ep' %}Season {{ (tvdb_season|default(series_season))|pad(2) }}/{% endif %}{% endif %}
       # Filename (inside of folder) to move to
       filename: >
         {{ tvdb_series_name|default(series_name)|replace('/', '_')|replace(':', ' -')|replace(',', '') }} - {% if series_id_type == 'ep' and thetvdb_lookup_season_offset|default(False) %}{{ "S%0.2dE%0.2d"|format((series_season + thetvdb_lookup_season_offset),series_episode) }}{% else %}{{ series_id }}{% endif %}{% if ep_name|default(False) %} - {{ ep_name|replace('/', '_')|replace(':', ' -')|replace(',', '') }}{% endif %} - {{ quality }}.{{ location[-3:] }}
       clean_source: 40
-    if:
-      - movedone:
-          set:
-            path: '{{ movedone }}'
 
   Sort_Unpacked_TV_Premieres:
     # Where to get the unpacked (staged) files from

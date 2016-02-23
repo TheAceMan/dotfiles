@@ -1,6 +1,7 @@
 [dotfiles]
 ignore = [
     '.git',
+    '.gitattributes',
     '.gitignore',
     '.gitmodules',
     'README.md',
@@ -12,4 +13,6 @@ ignore = [
     '*.swp',
     '*~']
 packages = [
-    'flexget']
+    'config',
+    'flexget',
+    'oh-my-zsh']

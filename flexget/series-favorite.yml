@@ -1,24 +1,74 @@
 series:
-  - Ascension:
-      identified_by: ep
-  - "Cosmos: A Spacetime Odyssey":
-      name_regexp: ^cosmos.+a.space.time.odyssey
-  - Top Gear:
-      # Do not, under any circumstances, download the US version, it sucks
-      name_regexp: ^top.gear(?!.us)
-      begin: S17E06
-  - "Marvel's Agents of S.H.I.E.L.D.":
-      name_regexp: ^marvel(')?s.agents.of.(s.h.i.e.l.d.?|shield)
-  - The Newsroom:
-      alternate_name: [The Newsroom (2012)]
-      set:
-        tvdb_series_name: "The Newsroom (2012)"
-  - Parks and Recreation:
-      begin: S05E01
-if:
-  - "series_name == 'Ascension'":
-      manipulate:
-        - title:
-            replace:
-              regexp: 'part.(\d+)'
-              format: 'S01E0\1'
+  - American Horror Story
+  - Aqua Teen Hunger Force:
+      name_regexp: ^aqua.((teen.hunger.force)|(unit.patrol.squad.1)|(something.you.know.whatever))
+  - Archer (2009):
+      name_regexp: ^Archer(.2009)?
+  - Arrested Development
+  - Axe Cop
+  - Back In The Game
+  - Being Human (US):
+      name_regexp: ^Being.Human(.us)?
+  - Betas
+  - Better Call Saul
+  - Boardwalk Empire
+  - Brain Games
+  - Breaking Bad
+  - Californication
+  - Curb Your Enthusiasm
+  - Dexter
+  - Downton Abbey
+  - Eastbound & Down:
+      name_regexp: ^east.?bound(.and|.&)?.down
+  - Episodes
+  - Fear the Walking Dead
+  - Funny or Die Presents
+  - Game of Thrones
+  - Golden Boy (2013):
+      name_regexp: ^Golden.Boy(.2013)?
+  - Graceland
+  - Homeland
+  - House of Cards (2013)
+  - House of Lies
+  - How To Live With Your Parents
+  - It's Always Sunny in Philadelphia
+  - Justified
+  - Legit (2013)
+  - Louie (2010)
+  - Luck
+  - Mad Men
+  - Masters of Sex
+  - Men at Work
+  - Modern Family
+  - Nurse Jackie
+  - Orange Is The New Black
+  - Orphan Black
+  - Peaky Blinders
+  - Peep Show
+  - Shameless (US)
+  - Siberia
+  - South Park
+  - Spartacus
+  - Spartacus Blood and Sand
+  - Spartacus Gods of the Arena
+  - Spartacus Vengeance
+  - Spartacus War of the Damned
+  - Suits
+  - The Americans (2013)
+  - The Big Brain Theory
+  - The Big C
+  - The Borgias
+  - The Following
+  - The IT Crowd
+  - The Job Lot
+  - The League
+  - The Nerdist
+  - The Real L Word
+  - The Walking Dead
+  - The Wrong Mans
+  - Trophy Wife
+  - True Blood
+  - Under The Dome
+  - Utopia
+  - Wilfred
+  - Workaholics

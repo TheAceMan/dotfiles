@@ -3,6 +3,11 @@ series:
       alternate_name:
           - The Daily Show with Trevor Noah
       name_regexp: ^the.daily.show(.with.trevor.noah)?
+      #identified_by: date
+      identified_by: auto
+      # I always like to watch Stewart the next morning, so don't wait too long
+      timeframe: 2 hours
+  - Watch What Happens Live
   - The Nightly Show with Larry Wilmore:
       name_regexp: ^the.nightly.show(.with.larry.wilmore)?
       identified_by: date

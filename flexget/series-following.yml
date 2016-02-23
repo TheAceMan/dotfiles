@@ -1,35 +1,45 @@
 series:
-  - Aqua Teen Hunger Force Forever:
-      alternate_name:
-          - Aqua Unit Patrol Squad 1
-          - Aqua Something You Know Whatever
-          - Aqua TV Show Show
-          - Aqua Teen Hunger Force
-          - ATHF
-      set:
-        tvdb_id: 77120
-        tvdb_series_name: "Aqua Teen Hunger Force"
-  - Archer:
-      alternate_name: [Archer (2009)]
-      set:
-        tvdb_series_name: "Archer (2009)"
-  - Last Man Standing:
-      alternate_name:
-          - Last Man Standing (US)
-          - Last Man Standing (2011)
-  - Last Week Tonight with John Oliver:
-      identified_by: ep
-      set:
-        tvdb_id: 278518
-  - "It's Always Sunny in Philadelphia":
-      begin: S07E01
-  - MythBusters:
-      begin: S11E01
-  - South Park:
-      begin: S15E01
-  - "The Venture Bros.":
-      name_regexp: ^the.venture.bro(ther)?s\.?
-  - The Simpsons:
-      begin: S23E01
-  - Tosh.0:
-      begin: S03E07
+  - About A Boy
+  - All American Handyman
+  - Bar Rescue
+  - Best of Holmes on Homes
+  - Broad City
+  - Burn Notice
+  - Call the Midwife
+  - Detectorists
+  - Fools Gold
+  - From Dusk Till Dawn The Series:
+      name_regexp: ^From Dusk Till Dawn?(.The Series)
+  - Helix
+  - Holmes in New Orleans
+  - Holmes Inspection
+  - Holmes on Homes
+  - How It's Made
+  - Inside Amy Schumer
+  - Kitchen Nightmares
+  - Maron
+  - Married:
+        #- ^(?!.*[Jj]ob)(?!.*[Ss]ight)(?!.*[Jj]onas)(?!.*[Mm]edicine).*[Mm]arried.*$
+      name_regexp:
+        - ^(?!.*Job)(?!.*Sight)(?!.*Jonas)(?!.*Medicine)Married
+  - Modern Marvels
+  - MythBusters
+  - Plebs
+  - Real Time With Bill Maher
+  - Restaurant Impossible
+  - Silicon Valley
+  - The Good Wife
+  - The Jeselnik Offensive
+  - The Meltdown With Jonah And Kumail
+  - The Men Who Made Us Spend
+  - The Soup
+  - The Soup Investigates
+  - Top Chef
+  - Top Chef Masters
+  - Top Chef Last Chance Kitchen
+  - Top Gear:
+      # Do not, under any circumstances, download the US version, it sucks
+      name_regexp: ^top.gear(?!.us)
+  - Tosh.0
+  - True Detective
+  - Veep

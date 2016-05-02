@@ -108,6 +108,7 @@ templates:
       tokyotosho.info: 15 seconds
       torrenticity.com: 15 seconds
       nyaa.eu: 15 seconds
+      thexem.de: 10 seconds
     # The Pirate Bay ssl certs always fail
     verify_ssl_certificates: no
     # Size and seed restrictions require real torrents
@@ -170,9 +171,10 @@ templates:
       - "/media/data/mythtv/videos/unrar/staging/tv_shows/"
       - "/media/data/mythtv/videos/unrar/staging/tv_premieres/"
       - "/media/data/torrent/inprogress/"
-    thexem:
-      source: scene
-      destination: tvdb
+    # Disabl TheXEM until the plugin is rewritten
+    #thexem:
+    #  source: scene
+    #  destination: tvdb
     # Look up info on TheTVDB.com to fill in extra info
     thetvdb_lookup: yes
     trakt_lookup: yes
@@ -380,6 +382,7 @@ tasks:
             assume_special: true
           from:
             trakt_list:
+              username: '{{ secrets.trakt.username }}'
               account: '{{ secrets.trakt.account }}'
               list: Favorite TV
               type: shows
@@ -389,6 +392,7 @@ tasks:
             assume_special: true
           from:
             trakt_list:
+              username: '{{ secrets.trakt.username }}'
               account: '{{ secrets.trakt.account }}'
               list: Following TV
               type: shows
@@ -398,6 +402,7 @@ tasks:
             assume_special: true
           from:
             trakt_list:
+              username: '{{ secrets.trakt.username }}'
               account: '{{ secrets.trakt.account }}'
               list: Daily TV
               type: shows
@@ -407,6 +412,7 @@ tasks:
             assume_special: true
           from:
             trakt_list:
+              username: '{{ secrets.trakt.username }}'
               account: '{{ secrets.trakt.account }}'
               list: AK TV
               type: shows
@@ -478,9 +484,10 @@ tasks:
         - \bsample\b: {from: title}
     disable: builtins
     thetvdb_lookup: yes
-    thexem:
-      source: tvdb
-      destination: scene
+    # Disabl TheXEM until the plugin is rewritten
+    #thexem:
+    #  source: tvdb
+    #  destination: scene
     include:
       - series-favorite.yml
       - series-following.yml
@@ -851,7 +858,8 @@ tasks:
     priority: 100 # Always run before My-Movies task
     template: no_global # None of the global templates make sense here
     imdb_list:
-      user_id: '{{ secrets.imdb.user_id }}'
+      login: '{{ secrets.imdb.login }}'
+      password: '{{ secrets.imdb.password }}'
       list: watchlist
     trakt_list:
       username: '{{ secrets.trakt.username }}'

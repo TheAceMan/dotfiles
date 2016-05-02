@@ -96,7 +96,6 @@ templates:
     domain_delay:
       www.torrentleech.org: 10 seconds
       rss.torrentleech.org: 10 minutes
-<<<<<<< HEAD
       bt-chat.com: 15 seconds
       torrentz.eu: 15 seconds
       torrentz.me: 15 seconds
@@ -109,10 +108,6 @@ templates:
       tokyotosho.info: 15 seconds
       torrenticity.com: 15 seconds
       nyaa.eu: 15 seconds
-=======
-      bt-chat.com: 5 seconds
-      torrentz.eu: 10 seconds
->>>>>>> upstream/master
       thexem.de: 10 seconds
     # The Pirate Bay ssl certs always fail
     verify_ssl_certificates: no
@@ -170,20 +165,12 @@ templates:
     # Prevent from downloading shows that were aquired manually
     # or are currently downloading
     exists_series:
-<<<<<<< HEAD
       - "/media/data/mythtv/videos/TV/"
       - "/media/data2/mythtv/videos/TV/"
       - "/media/data/mythtv/videos/premieres/"
       - "/media/data/mythtv/videos/unrar/staging/tv_shows/"
       - "/media/data/mythtv/videos/unrar/staging/tv_premieres/"
       - "/media/data/torrent/inprogress/"
-=======
-      - "/media/raid/videos/TV Shows/"
-      - "/media/raid/videos/TV Premieres/"
-      - "/media/raid/videos/staging/tv_shows/"
-      - "/media/raid/videos/staging/tv_premieres/"
-      - "/media/raid/deluge/downloads/"
->>>>>>> upstream/master
     # Disabl TheXEM until the plugin is rewritten
     #thexem:
     #  source: scene
@@ -350,20 +337,13 @@ templates:
         - movie_list: movie queue
       from: [ filler: yes ] # Always produce entries
     list_remove:
-<<<<<<< HEAD
       - trakt_list: # Remove from Trakt list when we accept an item
           username: '{{ secrets.trakt.username }}'
-=======
-      - trakt_list:
->>>>>>> upstream/master
           account: '{{ secrets.trakt.account }}'
           list: Movie Queue
     list_add:
       - trakt_list: # Add accepted item to my Trakt watchlist
-<<<<<<< HEAD
           username: '{{ secrets.trakt.username }}'
-=======
->>>>>>> upstream/master
           account: '{{ secrets.trakt.account }}'
           list: watchlist
     set:
@@ -873,10 +853,7 @@ tasks:
       - movie_list: movie queue
     list_remove:
       - trakt_list:
-<<<<<<< HEAD
           username: '{{ secrets.trakt.username }}'
-=======
->>>>>>> upstream/master
           account: '{{ secrets.trakt.account }}'
           list: Movie Queue
 

@@ -3,6 +3,7 @@ series:
       alternate_name:
           - The Daily Show with Trevor Noah
       name_regexp: ^the.daily.show(.with.trevor.noah)?
+<<<<<<< HEAD
       timeframe: 2 hours
   - Watch What Happens Live
   - The Nightly Show with Larry Wilmore:
@@ -11,3 +12,5 @@ series:
   - The Late Show with Stephen Colbert:
       name_regexp: ^((the.)?late.show.with.)?stephen.colbert
       identified_by: date
+=======
+>>>>>>> upstream/master

@@ -1,4 +1,7 @@
 series:
+  - midnight:
+      set:
+        tvdb_id: 274099
   - About A Boy
   - All American Handyman
   - Bar Rescue
@@ -15,7 +18,6 @@ series:
   - Holmes Inspection
   - Holmes on Homes
   - How It's Made
-  - Inside Amy Schumer
   - Kitchen Nightmares
   - Maron
   - Married:
@@ -28,18 +30,13 @@ series:
   - Real Time With Bill Maher
   - Restaurant Impossible
   - Silicon Valley
-  - The Good Wife
   - The Jeselnik Offensive
   - The Meltdown With Jonah And Kumail
   - The Men Who Made Us Spend
   - The Soup
   - The Soup Investigates
-  - Top Chef
-  - Top Chef Masters
-  - Top Chef Last Chance Kitchen
   - Top Gear:
       # Do not, under any circumstances, download the US version, it sucks
       name_regexp: ^top.gear(?!.us)
   - Tosh.0
   - True Detective
-  - Veep

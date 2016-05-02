@@ -6,8 +6,10 @@ series:
   - Girlfriends' Guide to Divorce
   - Girls
   - Gypsy Sisters
+  - Inside Amy Schumer
   - Ladies of London
   - My 600-lb Life
+  - Not Safe with Nikki Glaser
   - Odd Mom Out
   - Preacher's Daughters
   - Project Runway
@@ -19,9 +21,12 @@ series:
   - Tabatha Takes Over
   - Tabatha's Salon Takeover
   - Tabathas Salon Takeover
+  - The Good Wife
   - The Jim Gaffigan Show
   - The Real Housewives of Atlanta:
       name_regexp: ^(The.)?Real.Housewives.of.Atlanta
+      set:
+        tvdb_id: 84159
   - The Real Housewives of Beverly Hills:
       name_regexp: ^(The.)?Real.Housewives.of.Beverly.Hills
   - The Real Housewives of Melbourne:
@@ -34,9 +39,16 @@ series:
       name_regexp: ^(The.)?Real.Housewives.of.New.York.City
   - The Real Housewives of Orange County:
       name_regexp: ^(The.)?Real.Housewives.of.Orange.County
+  - The Real Housewives of Potomac:
+      name_regexp: ^(The.)?Real.Housewives.of.Potomac
   - The Real Housewives of Vancouver:
       name_regexp: ^(The.)?Real.Housewives.of.Vancouver
   - This is Life with Lisa Ling
+  - Top Chef
+  - Top Chef Masters
+  - Top Chef Last Chance Kitchen
+  - Transparent
+  - Veep
   - "You're the Worst":
       name_regexp: ^you'?re.the.worst
       set:

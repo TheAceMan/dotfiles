@@ -102,6 +102,8 @@ nnoremap <leader>t :TagbarToggle<cr>
 nnoremap <leader>( :tabprev<cr>
 nnoremap <leader>) :tabnext<cr>
 nnoremap <leader>{ :tabnew<cr>
+nnoremap <silent> <leader>< :execute 'silent! tabmove ' . (tabpagenr()-2)<cr>
+nnoremap <silent> <leader>> :execute 'silent! tabmove ' . (tabpagenr())<cr>
 
 " Insert the directory of the current buffer in command line mode
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
@@ -118,6 +120,9 @@ nnoremap <leader>i :set list!<cr>
 
 " Sudo to write
 cnoremap w!! w !sudo tee % >/dev/null
+
+" Change current directory
+autocmd BufEnter * silent! lcd %:p:h
 
 " Spacing and tabbing
 set expandtab
@@ -138,6 +143,8 @@ au FileType make set noexpandtab shiftwidth=8 tw=100
 au FileType python set et sw=4 sts=4 ts=4 tw=100 ai
 au FileType html,xhtml set tw=0
 au FileType tex set spell tw=100
+au FileType gitconfig set expandtab!
+au FileType yaml set filetype=ansible
 au BufRead,BufNewFile *.bb set tw=100
 au BufRead,BufNewFile *.dox,*.dox.in set tw=100 filetype=doxygen spell
 au Syntax {cpp,c,idl} runtime syntax/doxygen.vim

@@ -97,8 +97,6 @@ templates:
       www.torrentleech.org: 10 seconds
       rss.torrentleech.org: 10 minutes
       bt-chat.com: 15 seconds
-      torrentz.eu: 15 seconds
-      torrentz.me: 15 seconds
       kat.ph: 15 seconds
       ezrss.it: 15 seconds
       h33t.com: 15 seconds
@@ -113,9 +111,28 @@ templates:
     verify_ssl_certificates: no
     # Size and seed restrictions require real torrents
     magnets: no
-    # torrentz' guys banned flexget users?
-    headers:
-      User-Agent: "Mozilla/5.0 (Windows NT 5.1; rv:16.0) Gecko/20100101 Firefox/16.0"
+#    slack:
+#      webhook-url: '{{ secrets.slack.webhook_url }}'
+#      text: >
+#        {{task}} - Download started:
+#        {%- if series_name is defined %}
+#        {% set info_string = tvdb_series_name|d(series_name) ~ ' - ' ~ series_id ~ (' - ' ~ tvdb_ep_name if tvdb_ep_name|default(False) else '') %}
+#        {%- if trakt_series_slug is defined and trakt_season is defined and trakt_episode is defined -%}
+#        <https://trakt.tv/shows/{{ trakt_series_slug }}/seasons/{{ trakt_season }}/episodes/{{ trakt_episode }}|{{ info_string }}>
+#        {%- else %}
+#        {{ info_string }}
+#        {%- endif %}
+#        - {{quality}}
+#        {%- elif imdb_name is defined %}
+#        {%- if imdb_url is defined %}
+#        <{{imdb_url}}|{{imdb_name}} {{imdb_year}}>
+#        {%- else %}
+#        {{imdb_name}} {{imdb_year}}
+#        {%- endif %}
+#        - {{quality}}
+#        {%- else -%}
+#        {{title}}
+#        {%- endif %}
 
   # This template is a "global" template for all TV-related tasks.
   # We keep all of the RSS feeds that list tv-related torrents here
@@ -124,9 +141,9 @@ templates:
     # This is a TON of feeds, you probably don't need so many, but why not?
     inputs:
 #      - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
-      - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Atv/?rss=1', silent: yes }   # Kickass (TV)
+#      - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Atv/?rss=1', silent: yes }   # Kickass (TV)
       - rss: { url: 'http://www.torlock.com/television/rss.xml', silent: yes }  # TorLock (TV)
-      - rss: { url: 'http://torrentz.eu/feed_verified?q=tv', silent: yes }      # Torrentz (Verified only, TV)
+#      - rss: { url: 'http://torrentz.eu/feed_verified?q=tv', silent: yes }      # Torrentz (Verified only, TV)
 #      - rss: { url: 'http://torrentz.me/feed_verified?q=tv', silent: yes } #same as .eu
 #      - rss: { url: 'http://ezrss.it/feed/', silent: yes }                      # EZRSS
       - rss: { url: 'https://eztv.ag/ezrss.xml', silent: yes }                      # EZRSS
@@ -212,9 +229,11 @@ templates:
 #            password: '{{ secrets.torrentleech.password }}'
 #            category: ['Episodes HD', 'Episodes']
         - flexget_archive: [tv]
-        - kat:
-            category: tv
-            verified: yes
+        - rarbg:
+            category: [41]
+            use_tvdb: true
+            min_seeders: 10
+
 
   # This template is a "global" template for all movie-related tasks.
   # We keep all of the RSS feeds that list movie-related torrents here
@@ -222,13 +241,13 @@ templates:
   movies-global:
     inputs:
 #      - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
-      - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Amovies/?rss=1', silent: yes } # Kickass (Movies)
+#      - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Amovies/?rss=1', silent: yes } # Kickass (Movies)
       - rss: { url: 'http://www.torlock.com/movies/rss.xml', silent: yes }     # TorLock (Movies)
       - rss: { url: 'http://kickass.to/movies/?rss=1', silent: yes }
       - rss: { url: 'https://yts.ag/rss', silent: yes }
       - rss: { url: 'http://www.torrentfunk.com/movies/rss.xml', silent: yes }
       - rss: { url: 'http://extratorrent.com/rss.xml?cid=4&type=last', silent: yes }
-      - rss: { url: 'http://torrentz.eu/feed_verified?q=movies', silent: yes } # Torrentz (Verified Movies)
+#      - rss: { url: 'http://torrentz.eu/feed_verified?q=movies', silent: yes } # Torrentz (Verified Movies)
 #      - rss: { url: 'http://rss.thepiratebay.se/207', silent: yes }           # The Pirate Bay (Highres - Movies)
 #      - rss: { url: 'http://rss.thepiratebay.se/201', silent: yes }           # The Pirate Bay (Highres - Movies)
 #      - rss: { url: 'http://rss.thepiratebay.sx/200', silent: yes }
@@ -297,12 +316,9 @@ templates:
 #            password: '{{ secrets.torrentleech.password }}'
 #            category: ['HD', 'BDRip', 'DVDRip', 'DVDR', 'Documentaries']
         - flexget_archive: [movies]
-        - kat:
-            category: movies
-            verified: yes
-        - torrentz:
-            reputation: verified
-            extra_terms: "movie* hd"
+        - rarbg:
+            category: [44, 45]
+            min_seeders: 10
         - piratebay:
             category: "highres movies"
             sort_by: seeds
@@ -621,6 +637,7 @@ tasks:
             position: next
             list: Favorite TV
             #aired_timeframe: 60 days
+            strip_dates: yes
       from: [filler: yes]
     include: [ series-favorite.yml ]
     all_series:
@@ -645,6 +662,7 @@ tasks:
             context: collected
             position: next
             #aired_timeframe: 60 days
+            strip_dates: yes
         - trakt_emit:
             username: '{{ secrets.trakt.username }}'
             account: '{{ secrets.trakt.account }}'
@@ -652,6 +670,7 @@ tasks:
             context: collected
             position: next
             #aired_timeframe: 60 days
+            strip_dates: yes
       from: [filler: yes]
     include: [ series-following.yml, series-ak.yml ]
     all_series:

@@ -97,7 +97,9 @@ templates:
       www.torrentleech.org: 10 seconds
       rss.torrentleech.org: 10 minutes
       bt-chat.com: 15 seconds
-      kat.ph: 15 seconds
+#      torrentz.eu: 15 seconds
+#      torrentz.me: 15 seconds
+#      kat.ph: 15 seconds
       ezrss.it: 15 seconds
       h33t.com: 15 seconds
       showrss.info: 15 seconds
@@ -111,6 +113,9 @@ templates:
     verify_ssl_certificates: no
     # Size and seed restrictions require real torrents
     magnets: no
+    # torrentz' guys banned flexget users?
+#    headers:
+#      User-Agent: "Mozilla/5.0 (Windows NT 5.1; rv:16.0) Gecko/20100101 Firefox/16.0"
 #    slack:
 #      webhook-url: '{{ secrets.slack.webhook_url }}'
 #      text: >
@@ -161,12 +166,12 @@ templates:
       - rss: { url: 'http://www.nyaa.eu/?page=rss', silent: yes }
       - rss: { url: 'http://extratorrent.cc/rss.xml?cid=8&type=last', silent: yes } #same as extratorrent.com
       - rss: { url: 'http://www.torrentfunk.com/tv/rss.xml', silent: yes }
-      - rss: { url: 'http://kickass.to/tv/?rss=1', silent: yes }
+#      - rss: { url: 'http://kickass.to/tv/?rss=1', silent: yes }
 #      - rss: { url: 'http://www.monova.org/rss.php?type=catname&id=8', silent: yes }
 #      - rss: { url: 'http://rss.thepiratebay.sx/200', silent: yes }
-      - rss: { url: 'http://torrentz.eu/feed?q=housewives', silent: yes }
-      - rss: { url: 'http://kickass.to/usearch/housewives/?rss=1', silent: yes }
-      - rss: { url: 'http://torrentz.eu/feed?q=watch+what+happens+live', silent: yes }
+#      - rss: { url: 'http://torrentz.eu/feed?q=housewives', silent: yes }
+#      - rss: { url: 'http://kickass.to/usearch/housewives/?rss=1', silent: yes }
+#      - rss: { url: 'http://torrentz.eu/feed?q=watch+what+happens+live', silent: yes }
 #      - rss: { url: 'http://www.dailytvtorrents.org/rss/allshows', silent: yes }
       - rss: { url: 'http://showrss.info/feeds/all.rss', silent: yes } # Karmorra (All)
     if:
@@ -229,6 +234,9 @@ templates:
 #            password: '{{ secrets.torrentleech.password }}'
 #            category: ['Episodes HD', 'Episodes']
         - flexget_archive: [tv]
+#        - kat:
+#            category: tv
+#            verified: yes
         - rarbg:
             category: [41]
             use_tvdb: true
@@ -243,7 +251,7 @@ templates:
 #      - rss: { url: 'http://rss.torrentleech.org/{{ secrets.torrentleech.rss_key }}', other_fields: [category] } # Need account
 #      - rss: { url: 'https://kat.cr/usearch/verified%3A1%20category%3Amovies/?rss=1', silent: yes } # Kickass (Movies)
       - rss: { url: 'http://www.torlock.com/movies/rss.xml', silent: yes }     # TorLock (Movies)
-      - rss: { url: 'http://kickass.to/movies/?rss=1', silent: yes }
+#      - rss: { url: 'http://kickass.to/movies/?rss=1', silent: yes }
       - rss: { url: 'https://yts.ag/rss', silent: yes }
       - rss: { url: 'http://www.torrentfunk.com/movies/rss.xml', silent: yes }
       - rss: { url: 'http://extratorrent.com/rss.xml?cid=4&type=last', silent: yes }
@@ -316,6 +324,12 @@ templates:
 #            password: '{{ secrets.torrentleech.password }}'
 #            category: ['HD', 'BDRip', 'DVDRip', 'DVDR', 'Documentaries']
         - flexget_archive: [movies]
+#        - kat:
+#            category: movies
+#            verified: yes
+#        - torrentz:
+#            reputation: verified
+#            extra_terms: "movie* hd"
         - rarbg:
             category: [44, 45]
             min_seeders: 10
@@ -343,8 +357,9 @@ templates:
 
   # This template uses the movie queue to find movies from various sources
   movies-queued:
-    list_accept:
-      - movie_list: movie queue
+    list_match:
+      from:
+        - movie_list: movie queue
     template: movies-discover
     disable:
       - seen_movies
@@ -630,7 +645,7 @@ tasks:
       #no_entries_ok: yes
       interval: 2 hours
       what:
-        - trakt_emit:
+        - next_trakt_episodes:
             username: '{{ secrets.trakt.username }}'
             account: '{{ secrets.trakt.account }}'
             context: collected
@@ -655,7 +670,7 @@ tasks:
       #no_entries_ok: yes
       interval: 2 hours
       what:
-        - trakt_emit:
+        - next_trakt_episodes:
             username: '{{ secrets.trakt.username }}'
             account: '{{ secrets.trakt.account }}'
             list: Following TV
@@ -663,7 +678,7 @@ tasks:
             position: next
             #aired_timeframe: 60 days
             strip_dates: yes
-        - trakt_emit:
+        - next_trakt_episodes:
             username: '{{ secrets.trakt.username }}'
             account: '{{ secrets.trakt.account }}'
             list: AK TV
@@ -688,7 +703,7 @@ tasks:
       #no_entries_ok: yes
       interval: 2 hours
       what:
-        - trakt_emit:
+        - next_trakt_episodes:
             username: '{{ secrets.trakt.username }}'
             account: '{{ secrets.trakt.account }}'
             list: Daily TV
@@ -713,7 +728,7 @@ tasks:
       - est_movies
     discover:
       what:
-        - emit_series:
+        - next_series_episodes:
             backfill: yes
       from: [filler: yes]
     include:
@@ -868,8 +883,9 @@ tasks:
     # Rotten Tomatoes is broken, possibly forever :(
     #rottentomatoes_lookup: '{{ secrets.rottentomatoes.api_key }}'
     require_field: [movie_name, movie_year]
-    list_accept:
-      - movie_list: movie queue
+    list_match:
+      from:
+        - movie_list: movie queue
     list_remove:
       - trakt_list:
           username: '{{ secrets.trakt.username }}'

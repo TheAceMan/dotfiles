@@ -1,4 +1,7 @@
 series:
+  - midnight:
+      set:
+        tvdb_id: 274099
   - Aqua Teen Hunger Force Forever:
       alternate_name:
           - Aqua Unit Patrol Squad 1
@@ -33,9 +36,6 @@ series:
       begin: S23E01
   - Tosh.0:
       begin: S03E07
-  - midnight:
-      set:
-        tvdb_id: 274099
   - About A Boy
   - All American Handyman
   - Bar Rescue

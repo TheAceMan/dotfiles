@@ -1,48 +1,36 @@
 series:
-  - midnight:
+  - At Midnight:
+      #alternate_name:
+      #    - @midnight
+      name_regexp:
+        - ^(?!.*Girl)Midnight
       set:
         tvdb_id: 274099
-  - Aqua Teen Hunger Force Forever:
+      identified_by: date
+  - The Daily Show:
       alternate_name:
-          - Aqua Unit Patrol Squad 1
-          - Aqua Something You Know Whatever
-          - Aqua TV Show Show
-          - Aqua Teen Hunger Force
-          - ATHF
-      set:
-        tvdb_id: 77120
-        tvdb_series_name: "Aqua Teen Hunger Force"
-  - Archer:
-      alternate_name: [Archer (2009)]
-      set:
-        tvdb_series_name: "Archer (2009)"
-  - Last Man Standing:
-      alternate_name:
-          - Last Man Standing (US)
-          - Last Man Standing (2011)
-  - Last Week Tonight with John Oliver:
-      identified_by: ep
-      set:
-        tvdb_id: 278518
-  - "It's Always Sunny in Philadelphia":
-      begin: S07E01
-  - MythBusters:
-      begin: S11E01
-  - South Park:
-      begin: S15E01
-  - "The Venture Bros.":
-      name_regexp: ^the.venture.bro(ther)?s\.?
-  - The Simpsons:
-      begin: S23E01
-  - Tosh.0:
-      begin: S03E07
+          - The Daily Show with Trevor Noah
+      name_regexp: ^the.daily.show(.with.trevor.noah)?
+      #identified_by: date
+      identified_by: auto
+      # I always like to watch Stewart the next morning, so don't wait too long
+      timeframe: 2 hours
+  - The Late Show with Stephen Colbert:
+      name_regexp: ^((the.)?late.show.with.)?stephen.colbert
+      identified_by: date
+  - The Nightly Show with Larry Wilmore:
+      name_regexp: ^the.nightly.show(.with.larry.wilmore)?
+      identified_by: date
+  - Watch What Happens Live
   - About A Boy
   - All American Handyman
   - Bar Rescue
   - Best of Holmes on Homes
+  - Black Mirror
   - Broad City
   - Burn Notice
   - Call the Midwife
+  - Dark Net
   - Detectorists
   - Fools Gold
   - From Dusk Till Dawn The Series:
@@ -58,7 +46,9 @@ series:
         #- ^(?!.*[Jj]ob)(?!.*[Ss]ight)(?!.*[Jj]onas)(?!.*[Mm]edicine).*[Mm]arried.*$
       name_regexp:
         - ^(?!.*Job)(?!.*Sight)(?!.*Jonas)(?!.*Medicine)Married
+  - Marvel's Luke Cage
   - Modern Marvels
+  - Mr. Robot
   - MythBusters
   - Plebs
   - Real Time With Bill Maher
@@ -74,3 +64,75 @@ series:
       name_regexp: ^top.gear(?!.us)
   - Tosh.0
   - True Detective
+  - American Horror Story
+  - Aqua Teen Hunger Force:
+      name_regexp: ^aqua.((teen.hunger.force)|(unit.patrol.squad.1)|(something.you.know.whatever))
+  - Archer (2009):
+      name_regexp: ^Archer(.2009)?
+  - Arrested Development
+  - Axe Cop
+  - Back In The Game
+  - Being Human (US):
+      name_regexp: ^Being.Human(.us)?
+  - Betas
+  - Better Call Saul
+  - Boardwalk Empire
+  - Brain Games
+  - Breaking Bad
+  - Californication
+  - Curb Your Enthusiasm
+  - Dexter
+  - Downton Abbey
+  - Eastbound & Down:
+      name_regexp: ^east.?bound(.and|.&)?.down
+  - Episodes
+  - Fear the Walking Dead
+  - Funny or Die Presents
+  - Game of Thrones
+  - Golden Boy (2013):
+      name_regexp: ^Golden.Boy(.2013)?
+  - Graceland
+  - Homeland
+  - House of Cards (2013)
+  - House of Lies
+  - How To Live With Your Parents
+  - It's Always Sunny in Philadelphia
+  - Justified
+  - Legit (2013)
+  - Louie (2010)
+  - Luck
+  - Mad Men
+  - Masters of Sex
+  - Men at Work
+  - Modern Family
+  - Nurse Jackie
+  - Orange Is The New Black
+  - Orphan Black
+  - Peaky Blinders
+  - Shameless (US)
+  - Siberia
+  - South Park
+  - Spartacus
+  - Spartacus Blood and Sand
+  - Spartacus Gods of the Arena
+  - Spartacus Vengeance
+  - Spartacus War of the Damned
+  - Suits
+  - The Americans (2013)
+  - The Big Brain Theory
+  - The Big C
+  - The Borgias
+  - The Following
+  - The IT Crowd
+  - The Job Lot
+  - The League
+  - The Nerdist
+  - The Real L Word
+  - The Walking Dead
+  - The Wrong Mans
+  - Trophy Wife
+  - True Blood
+  - Under The Dome
+  - Utopia
+  - Wilfred
+  - Workaholics
